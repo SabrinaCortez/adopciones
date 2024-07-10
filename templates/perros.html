@@ -1,0 +1,93 @@
+{% include 'defaults/head.html'%}
+<body>
+ <!--MENU ENCABEZADO-->
+ {% include 'defaults/header.html' %}     
+   
+    <h1>Perros</h1>
+    <main>
+
+        <div class="container">
+           
+            <div class="article" >
+                <img src="../static/fotos/perros/balto.jpeg" alt="balto">
+                <h2 class="mascota">Balto</h2>
+               <p>
+                raza: mestizo <br>
+                edad: 2 años <br>
+                condicion especial: ninguno <br>
+                sexo:macho <br>
+               </p>
+               <a href="/formAdopsion">Formulario de adopción</a>
+            </div>
+            <div class="article">
+                <img src="../static/fotos/perros/chuletas.jpeg" alt="chuletas">
+                <h2>Chuletas</h2>
+                <p>
+                    raza: bulldog frances <br>
+                    edad: 1 año <br>
+                    condicion especial: ninguna <br>
+                    sexo:hembra <br>
+                   </p>
+                   <a href="/formAdopsion">Formulario de adopción</a>
+            </div>
+            <div class="article">
+                <img src="../static/fotos/perros/firulais.jpg" alt="firulais">
+                <h2>Firulais</h2>
+                <p>
+                raza: mestizo <br>
+                edad: 2 años <br>
+                condicion especial: ninguna <br>
+                sexo:macho <br>
+               </p>
+               <a href="/formAdopsion">Formulario de adopción</a>
+            </div>
+            <div class="article">
+                <img src="../static/fotos/perros/reino.jpg" alt="reino">
+                <h2>Reino</h2>
+              <p>  raza: chihuahua<br>
+                edad: 1 año <br>
+                condicion especial: ninguna <br>
+                 sexo:macho <br>
+
+               </p>
+               <a href="/formAdopsion">Formulario de adopción</a>
+            </div>
+         
+        </div>
+    
+    </main>
+
+  <!-- Carrusel-->
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="../static/img/perrito.gato.inicio3.jpg" class="d-flex w-100" alt="Imagen Mascotas unidas">
+      </div>
+      <div class="carousel-item">
+        <img src="../static/img/perrito.triste1.jpg" class="d-block w-100" alt="gatitos en adopción">
+      </div>
+      <div class="carousel-item">
+        <img src="../static/img/perrito.triste2.jpg" class="d-block w-100" alt="perrito en adopción">
+      </div>
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
+  </div>
+
+ <!-- Pie de pagina(footer) -->
+ {% include 'defaults/footer.html'%}
+  <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+  crossorigin="anonymous">
+</script>
+
+</body>
+</html>
