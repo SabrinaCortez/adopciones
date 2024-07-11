@@ -3,6 +3,9 @@ Username:adrianreciomdq
 Clave Base www.pythonanywhere.com
 base adrianreciomdq$adopciones
 
+use adrianreciomdq$adopciones;
+show tables;
+
 CREATE TABLE tipoanimal(
     cidTipoAnimal VARCHAR(2) PRIMARY KEY,
     cDescripcion VARCHAR(45) NOT NULL

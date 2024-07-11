@@ -7,16 +7,16 @@ import pymysql
 from pymysql import Error
 
 # local -> wamp
-# host = "localhost"
-# user = "root"
-# clave= ""
-# db="adopciones"
+host = "localhost"
+user = "root"
+clave= ""
+db="adopciones"
 
 # remota -> pythonenaywhere
-host = "adrianreciomdq.mysql.pythonanywhere-services.com"
-user = "adrianreciomdq"
-clave= "www.pythonanywhere.com"
-db="adrianreciomdq$adopciones"
+#host = "adrianreciomdq.mysql.pythonanywhere-services.com"
+#user = "adrianreciomdq"
+#clave= "www.pythonanywhere.com"
+#db="adrianreciomdq$adopciones"
 
 def  conexionMySQL():
     try:
@@ -26,7 +26,7 @@ def  conexionMySQL():
         # Comprobar si la conexión fue exitosa
         if conexion:
             print("Conexión exitosa a la base de datos")
-            pruebaListarAnimales(conexion)
+            # pruebaListarAnimales(conexion)
             return conexion
     except Error as e:
         print("Error durante la conexión:", e)

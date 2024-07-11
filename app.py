@@ -1,4 +1,3 @@
-# from flask import *
 from flask import Flask,render_template, request, redirect
 from controller import *
 
@@ -20,12 +19,14 @@ def dataContacto():
 @app.route('/perros')
 def dataPerros():
     title="Perros"
-    return render_template("perros.html",title=title)
+    perros = obtener_AnimalesPublicados('PE')
+    return render_template("perros.html",title=title,perros=perros)
 
 @app.route('/gatos')
 def dataGatos():
     title="Gatos"
-    return render_template("gatos.html",title=title)
+    gatos = obtener_AnimalesPublicados('GA')
+    return render_template("gatos.html",title=title,gatos=gatos)
 
 @app.route('/nosotros')
 def dataNosotros():
@@ -42,7 +43,7 @@ def dataForm():
     title="Formulario de adopcion"
     tipoEstados = obtener_TipoEstado()
     tipoAnimales = obtener_TipoAnimales()
-    publicados = obtener_AnimalesPublicados()
+    publicados = obtener_AnimalesPublicadosNombres()
     # for row in publicados:
     #        print(row)
     return render_template("formAdopcion.html",title=title,tipoEstados=tipoEstados,tipoAnimales=tipoAnimales,publicados=publicados)
@@ -56,14 +57,24 @@ def dataTransito():
 
 
     # Ruta para procesar el formulario
-@app.route("/formularioAdopcionGrabar", methods = ['POST'])
+@app.route('/formularioAdopcionGrabar', methods = ['POST'])
 def formularioAdopcion_Grabar():
     # Obtener el valor seleccionado del combo box
     tipoanimal = request.form['tipoanimal']
     idAnimales = request.form['idAnimales']
     tipoestado = request.form['tipoestado']
+    cNombreyApellido = request.form['cNombreyApellido']
+    cDNI = request.form['cDNI']
+    cCorreo = request.form['cCorreo']
+    cLinkInstagram = request.form.get('cTelefono')
+    cTelefono = request.form.get('cTelefono')
+    dFechaNacimiento = request.form.get('dFechaNacimiento ')
+    cCasaDepartamento = request.form.get('cCasaDepartamento')
     print('Grabamos la adopcion')
+    adoptante_nuevo(cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento)
+    estado_Actualizar (idAnimales , cDNI,tipoestado)
     # Aquí puedes realizar acciones con el valor seleccionado, como consultas adicionales o redireccionamientos
-    print  (f"El tipo de animal seleccionado tiene el ID: {idAnimales} {tipoanimal} {tipoestado}")
-    return f"El tipo de animal seleccionado tiene el ID: {idAnimales} {tipoanimal} {tipoestado}"
-
+    # {cCasaDepartamento}{dFechaNacimiento} {cTelefono}{cLinkInstagram}
+    print  (f"El tipo de animal seleccionado tiene el ID:  {cCasaDepartamento}{dFechaNacimiento} {cTelefono}{cLinkInstagram}{cCorreo} {cDNI}{cNombreyApellido} {idAnimales} {tipoanimal} {tipoestado}")
+    return redirect("/")
+#f"El tipo de animal seleccionado tiene el ID:{cCasaDepartamento}{dFechaNacimiento}{cTelefono} {cNombreyApellido} {idAnimales} {tipoanimal} {tipoestado}"
