@@ -1,4 +1,5 @@
 from db import conexionMySQL
+from datetime import date
 
 # para probar
 def probar_Conexion():
@@ -112,18 +113,77 @@ def obtener_AnimalesPublicadosNombres():
 def adoptante_nuevo(cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento):
     conexion = conexionMySQL()
     with conexion.cursor() as cursor:
-        query = "INSERT INTO adoptante (cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento) VALUES (%s, %s, %s,%s, %s, %s,%s)"
-        cursor.execute(query, (cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento))
+        query =  """
+        INSERT INTO adoptante (cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento)
+                SELECT   %s, %s, %s,%s, %s, %s,%s 
+                FROM adoptante
+                WHERE !EXISTS (
+                        SELECT 1
+                        FROM adoptante 
+                    WHERE cDNI = %s )=1 limit 1
+                """
+        cursor.execute(query, (cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento,cDNI))
         result = cursor
         conexion.commit()
         conexion.close()
         return result
     
-
+def adoptante_solicitudes():
+    conexion = conexionMySQL()
+    # consulta db
+    with conexion.cursor() as cursor:
+        query = """ 
+                SELECT A.cDNI,cNombreyApellido, cCorreo,E.cidTipoEstado ,T.cDescripcion, E.idAnimales,AN.cNombre,E.dDesde
+                    FROM adoptante A
+                        INNER JOIN estados E
+                            ON A.cDNI = E.cDNI
+                        INNER JOIN tipoestado T
+                            ON T.cidTipoEstado =  E.cidTipoEstado 
+                        INNER JOIN animales AN
+                            on AN.idAnimales = E.idAnimales
+                        WHERE E.cidTipoEstado IN ('TR','AD')
+                            AND dHasta IS NULL
+                """
+        cursor.execute(query)
+    # procesar los resultados -> fetch
+        result = cursor.fetchall()
+    # cerrar la conexion
+        conexion.commit()
+        conexion.close()
+        return result
+    
 def estado_Actualizar (idAnimales , cDNI, tipoestado):
     conexion = conexionMySQL()
     with conexion.cursor() as cursor:
         cursor.execute("UPDATE estados SET cDNI = %s, cidTipoEstado = %s WHERE idAnimales = %s and dHasta is null ",(cDNI,tipoestado,idAnimales))
+        result = cursor
+    conexion.commit()
+    conexion.close()
+    return result
+
+
+def adoptante_confirmar (cDNI, idAnimales ):
+    # si acepto el tramite, cierro la fecha
+    hoy = date.today()
+    conexion = conexionMySQL()
+    with conexion.cursor() as cursor:
+        cursor.execute("UPDATE estados SET dHasta = %s WHERE cDNI = %s AND idAnimales = %s and dHasta is null ",(hoy ,cDNI,idAnimales))
+        result = cursor
+    conexion.commit()
+    conexion.close()
+    return result
+
+def adoptante_negar (cDNI, idAnimales ):
+    # si le niego el tramite el animal se vuelve a publicar
+    hoy = date.today()
+    conexion = conexionMySQL()
+    with conexion.cursor() as cursor:
+        cursor.execute("""
+                        UPDATE estados
+                           SET  cidTipoEstado = 'PU' ,
+                                 cDNI = NULL
+                        WHERE cDNI = %s and idAnimales = %s """
+                       ,(cDNI,idAnimales)) 
         result = cursor
     conexion.commit()
     conexion.close()

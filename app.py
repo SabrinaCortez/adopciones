@@ -55,6 +55,25 @@ def dataTransito():
     gatos = obtener_AnimalesEnTransito('GA')
     return render_template("transito.html",title=title,perros= perros,gatos =gatos )
 
+@app.route('/listadoadoptantes')
+def Adoptantes_Listado():
+    title="Listado Adoptantes"
+    adoptantes = adoptante_solicitudes()
+    return render_template("listadoAdoptantes.html",title=title,adoptantes= adoptantes)
+
+@app.route('/adoptante_Confirmar/<string:cDNI>/<int:idAnimales>')
+def adoptante_Confirmar(cDNI,idAnimales):
+    adoptante_confirmar (cDNI, idAnimales )
+    return redirect("/listadoadoptantes")
+
+    
+@app.route('/adoptante_Anular/<string:cDNI>/<int:idAnimales>')
+def adoptante_Anular(cDNI,idAnimales):
+    adoptante_negar(cDNI, idAnimales )
+    print(cDNI)
+    print(idAnimales)
+    return redirect("/listadoadoptantes")
+
 
     # Ruta para procesar el formulario
 @app.route('/formularioAdopcionGrabar', methods = ['POST'])
@@ -73,8 +92,6 @@ def formularioAdopcion_Grabar():
     print('Grabamos la adopcion')
     adoptante_nuevo(cDNI,cNombreyApellido,cCorreo,cLinkInstagram,cTelefono,dFechaNacimiento,cCasaDepartamento)
     estado_Actualizar (idAnimales , cDNI,tipoestado)
-    # Aquí puedes realizar acciones con el valor seleccionado, como consultas adicionales o redireccionamientos
-    # {cCasaDepartamento}{dFechaNacimiento} {cTelefono}{cLinkInstagram}
     print  (f"El tipo de animal seleccionado tiene el ID:  {cCasaDepartamento}{dFechaNacimiento} {cTelefono}{cLinkInstagram}{cCorreo} {cDNI}{cNombreyApellido} {idAnimales} {tipoanimal} {tipoestado}")
     return redirect("/")
 #f"El tipo de animal seleccionado tiene el ID:{cCasaDepartamento}{dFechaNacimiento}{cTelefono} {cNombreyApellido} {idAnimales} {tipoanimal} {tipoestado}"
